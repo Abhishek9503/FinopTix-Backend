@@ -1,9 +1,18 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
+import { version } from 'os';
+import { ApiSecurity } from '@nestjs/swagger';
+@ApiSecurity("apiKey")
+@Controller(
+  {
+    version: '1',
+  }
+)
 
-@Controller()
+
+
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
 
   @Get()
   getHello(): string {
