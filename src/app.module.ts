@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [ConfigModule.forRoot({ isGlobal: true }),
@@ -21,7 +22,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     database: process.env.POSTGRES_DB,
     autoLoadEntities:true,
     synchronize: process.env.NODE_ENV !== "production",
-  })
+  }),
+  AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],

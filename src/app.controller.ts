@@ -2,7 +2,7 @@ import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 import { version } from 'os';
 import { ApiSecurity } from '@nestjs/swagger';
-@ApiSecurity("apiKey")
+@ApiSecurity('apiKey')
 @Controller(
   {
     version: '1',
