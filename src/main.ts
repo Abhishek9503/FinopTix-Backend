@@ -33,7 +33,8 @@ async function bootstrap() {
     .addApiKey({
       type: "apiKey",
       name: 'X-API-KEY',
-      in: "header"
+      in: "header",
+      description: "API kye for authentiion for registered applications",
     },
       'apiKey',)
     .addTag("Finoptix")
