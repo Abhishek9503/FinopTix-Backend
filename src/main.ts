@@ -40,9 +40,6 @@ async function bootstrap() {
     .addTag("Finoptix")
     .build()
 
-  app.enableVersioning({
-    type: VersioningType.URI,
-  })
 
   const document = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup("api", app, document);

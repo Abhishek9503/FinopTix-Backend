@@ -5,6 +5,9 @@ import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { PdfParserController } from './parsers/pdf-parser/pdf-parser.controller';
+import { ParsersController } from './parsers/parsers.controller';
+import { ParsersModule } from './parsers/parsers.module';
 
 @Module({
   imports: [ConfigModule.forRoot({ isGlobal: true }),
@@ -23,7 +26,8 @@ import { AuthModule } from './auth/auth.module';
     autoLoadEntities:true,
     synchronize: process.env.NODE_ENV !== "production",
   }),
-  AuthModule
+  AuthModule,
+  ParsersModule
   ],
   controllers: [AppController],
   providers: [AppService],

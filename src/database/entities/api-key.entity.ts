@@ -4,6 +4,7 @@ import { Application } from "./application.entity";
 
 
 
+
 @Entity()
 export class ApiKey {
     @PrimaryGeneratedColumn("uuid")
