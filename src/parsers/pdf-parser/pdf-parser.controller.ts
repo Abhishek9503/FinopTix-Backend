@@ -1,9 +1,10 @@
-import { Body, Controller, Get, ParseFilePipe, ParseFilePipeBuilder, Post, UnprocessableEntityException, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, ParseFilePipe, ParseFilePipeBuilder, Post, UnprocessableEntityException, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { PdfParserService } from './pdf-parser.service';
 import { PdfParserUploadResultDto, PdfParserUrlResultDto } from './dto/pdf-parser-result.dto';
 import { pdfParserRequestDto } from './dto/pdf-parser-request.dto';
+import {  PdfNotParsedError } from './exceptions/exceptions';
 
 
 const uploadSchema = {
@@ -40,35 +41,47 @@ export class PdfParserController {
 
   @Post()
   async parsePdfFromUpload(@UploadedFile(pdfPipe) file: Express.Multer.File): Promise<PdfParserUploadResultDto> {
-    const text = await this.pdfParserService.parsePdf(file.buffer);
 
-    if (typeof text !== 'string' || text.length === 0) {
-      throw new UnprocessableEntityException("Could not parse given PDF File")
+    try {
+      const text = await this.pdfParserService.parsePdf(file.buffer);
+      return {
+        originalFileName: file.originalname,
+        content: text,
+      }
     }
 
-    return {
-      originalFileName: file.originalname,
-      content: text,
+    catch (e) {
+      throw new UnprocessableEntityException(e.message)
+
     }
+
+
   }
 
 
   @Post('url')
   async parsedPdfFromUrl(
     @Body() requestDto: pdfParserRequestDto
-  ): Promise< PdfParserUrlResultDto> {
+  ): Promise<PdfParserUrlResultDto> {
 
+    try {
+      
     const file = await this.pdfParserService.loadPdfFromUrl(requestDto.url);
     const text = await this.pdfParserService.parsePdf(file)
-
-    if (typeof text !== 'string' || text.length === 0) {
-      throw new UnprocessableEntityException("Could not  parse given pdf file")
-    }
-
+  
     return {
       originalUrl: requestDto.url,
       content: text,
     }
+    } catch (e) {
+     if(e instanceof PdfNotParsedError) {
+      throw new UnprocessableEntityException(e.message)
+     }
+
+     throw new BadRequestException(e.message)
+
+    }
+
 
   }
 }

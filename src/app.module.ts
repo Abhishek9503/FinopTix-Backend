@@ -1,12 +1,9 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
-import { PdfParserController } from './parsers/pdf-parser/pdf-parser.controller';
-import { ParsersController } from './parsers/parsers.controller';
+
 import { ParsersModule } from './parsers/parsers.module';
 
 @Module({
@@ -29,7 +26,5 @@ import { ParsersModule } from './parsers/parsers.module';
   AuthModule,
   ParsersModule
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule { }
