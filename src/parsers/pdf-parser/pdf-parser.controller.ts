@@ -1,8 +1,9 @@
-import { Controller, Get, ParseFilePipe, ParseFilePipeBuilder, Post, UnprocessableEntityException, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, ParseFilePipe, ParseFilePipeBuilder, Post, UnprocessableEntityException, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { PdfParserService } from './pdf-parser.service';
-import { PdfParserResultDto } from './dto/pdf-parser-result.dto';
+import { PdfParserUploadResultDto, PdfParserUrlResultDto } from './dto/pdf-parser-result.dto';
+import { pdfParserRequestDto } from './dto/pdf-parser-request.dto';
 
 
 const uploadSchema = {
@@ -38,7 +39,7 @@ export class PdfParserController {
   @UseInterceptors(FileInterceptor('file'))
 
   @Post()
-  async parsePdfFromUpload(@UploadedFile(pdfPipe) file: Express.Multer.File): Promise<PdfParserResultDto> {
+  async parsePdfFromUpload(@UploadedFile(pdfPipe) file: Express.Multer.File): Promise<PdfParserUploadResultDto> {
     const text = await this.pdfParserService.parsePdf(file.buffer);
 
     if (typeof text !== 'string' || text.length === 0) {
@@ -49,5 +50,25 @@ export class PdfParserController {
       originalFileName: file.originalname,
       content: text,
     }
+  }
+
+
+  @Post('url')
+  async parsedPdfFromUrl(
+    @Body() requestDto: pdfParserRequestDto
+  ): Promise< PdfParserUrlResultDto> {
+
+    const file = await this.pdfParserService.loadPdfFromUrl(requestDto.url);
+    const text = await this.pdfParserService.parsePdf(file)
+
+    if (typeof text !== 'string' || text.length === 0) {
+      throw new UnprocessableEntityException("Could not  parse given pdf file")
+    }
+
+    return {
+      originalUrl: requestDto.url,
+      content: text,
+    }
+
   }
 }
