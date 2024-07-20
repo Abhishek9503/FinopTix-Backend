@@ -3,7 +3,9 @@ import { IsUrl } from "class-validator";
 
 
 export class pdfParserRequestDto {
-    @ApiProperty()
+    @ApiProperty({
+        description: 'URL of the PDF filet to parse',
+    })
     @IsUrl()
     url: string;
 }

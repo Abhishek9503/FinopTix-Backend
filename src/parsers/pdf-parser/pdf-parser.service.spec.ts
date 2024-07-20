@@ -59,7 +59,7 @@ describe('PdfParserService', () => {
 
     it("should throw an error if the file extnsion is not pdf ", async () => {
 
-      const url = 'https://morth.nic.in/sites/default/files/dd12-13_0.jpg';
+      const url = 'https://pub-e0c49d057f644ddd8865f82361396859.r2.dev/cute-cat.jpg';
 
       await expect(service.loadPdfFromUrl(url)).rejects.toThrowError(
         PdfExtensionError,
@@ -71,7 +71,7 @@ describe('PdfParserService', () => {
 
     it("should throw an error if the file does not have the pdf magic number  ", async () => {
 
-      const url = 'https://morth.nic.in/sites/default/files/dd12-13_0.jpg';
+      const url = 'https://pub-e0c49d057f644ddd8865f82361396859.r2.dev/cute-cat.jpg.pdf';
 
       await expect(service.loadPdfFromUrl(url)).rejects.toThrowError(
         pdfMagicNumberError,

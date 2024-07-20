@@ -8,12 +8,6 @@ import { ApiKeyAuthGuard } from './auth/guard/apiKey-auth.guard';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-
-
-
-  //Testing kishan
-  //security
-
   app.useGlobalGuards(new ApiKeyAuthGuard());
   app.enableCors();
   app.use(helmet());
@@ -28,6 +22,11 @@ async function bootstrap() {
   //OpenAPi swagger documentation
   const config = new DocumentBuilder()
     .setTitle("FinopTix API")
+    .setContact(
+      'Abhishek Yadav',
+      'https://github.com/Abhishek9503',
+      'abhishek.pub9503@gmail.com'
+    )
     .setDescription("Finoptix is an API that allows you to organize your data in way thatt is easy to use  and understand  witht he power of large laguage model ")
     .setVersion('1.0')
     .addApiKey({
