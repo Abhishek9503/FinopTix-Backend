@@ -14,17 +14,17 @@ import { ParsersModule } from './parsers/parsers.module';
   },
   ]),
   TypeOrmModule.forRoot({
-    type:"postgres",
+    type: "postgres",
     host: process.env.POSTGRES_HOST,
     port: 5433,
     username: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,
     database: process.env.POSTGRES_DB,
-    autoLoadEntities:true,
+    autoLoadEntities: true,
     synchronize: process.env.NODE_ENV !== "production",
   }),
-  AuthModule,
-  ParsersModule
+    AuthModule,
+    ParsersModule
   ],
 })
 export class AppModule { }
