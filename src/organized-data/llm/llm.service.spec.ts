@@ -213,6 +213,7 @@ describe('LLMService', () => {
       const output = await service.generateOutput(model, promptTemplate, {
       wrongValue: 'cars',
       });
+      
       expect(output).rejects.toThrow(PromptTemplateFormateError);
     });
 });
